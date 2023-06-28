@@ -1,4 +1,5 @@
 from django.db import models
+from user.models import User
 
 
 class Manito(models.Model):
@@ -7,6 +8,6 @@ class Manito(models.Model):
         verbose_name = 'Manito'
 
     author = models.ForeignKey(
-        'user.User',
+        User,
         on_delete=models.CASCADE,
     )

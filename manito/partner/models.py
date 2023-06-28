@@ -1,4 +1,5 @@
 from django.db import models
+from user.models import User
 
 
 class Partner(models.Model):
@@ -7,13 +8,15 @@ class Partner(models.Model):
         verbose_name = 'Partner'
 
     sender = models.ForeignKey(
-        'user.User',
+        User,
         verbose_name="보내는 사람",
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='sender'
     )
 
     receiver = models.ForeignKey(
-        'user.User',
+        User,
         verbose_name="받는 사람",
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='receiver',
     )
