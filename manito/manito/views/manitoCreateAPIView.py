@@ -5,6 +5,7 @@ from email.mime.text import MIMEText
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from manito.models import Manito
 from manito.serializers.manitoSerializers import ManitoSerializer
@@ -46,6 +47,24 @@ def sendEmail(name_data, mail_data, price):
     return manito_sender, shuffle_manito, manito_mail
 
 
+def sendCheckEmail(mail_data, author):
+    s = smtplib.SMTP('smtp.gmail.com', 587)  # 세션 생성
+    s.starttls()  # TLS 보안 시작
+    s.login('modumanito@gmail.com', 'llzywzvdxeyjfhre')  # 로그인 인증
+    # 마니또 받는 사람 
+    manito_mail = [email.strip() for email in mail_data[1:-1].split(',')]
+
+    for i in range(len(manito_mail)):
+        # for i in range(len('a')):
+        msg = MIMEText(f'안녕하세요! {author}님(개설자)이 마니또 매칭 결과를 확인했습니다!!\n')
+        msg['Subject'] = '모두의 마니또'
+        s.sendmail("modumanito@gmail.com", f"{manito_mail[i]}", msg.as_string())
+
+    s.quit()  # 세션 종료
+
+    # return manito_sender, shuffle_manito, manito_mail
+
+
 class ManitoCreateAPIView(CreateAPIView):
     queryset = Manito.objects.all()
     serializer_class = ManitoSerializer
@@ -69,3 +88,16 @@ class ManitoCreateAPIView(CreateAPIView):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED,
                         headers=headers)
+    
+
+class ManitoCheckAPIView(APIView):
+    def post(self, *args, **kargs):
+        manito_id = self.kwargs['manito_id']
+        try:
+            manito = Manito.objects.get(id=manito_id)
+            maildata =  manito.mail_data
+            author = manito.author
+            sendCheckEmail(maildata, author)
+            return Response({"message: 마니또 확인 메일 발송 완료"}, status=status.HTTP_200_OK)
+        except:
+            return Response({"error: 마니또 확인 메일 발송 실패"}, status=400)

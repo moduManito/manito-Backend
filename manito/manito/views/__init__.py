@@ -1,1 +1,1 @@
-from .manitoCreateAPIView import ManitoCreateAPIView
+from .manitoCreateAPIView import ManitoCreateAPIView, ManitoCheckAPIView
