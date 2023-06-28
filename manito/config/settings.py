@@ -40,6 +40,7 @@ DEFAULT_APPS = [
 USER_APPS = [
     'user',
     'manito',
+    'partner',
 ]
 
 INSTALLED_APPS = DEFAULT_APPS + USER_APPS
