@@ -8,6 +8,7 @@ class ManitoSerializer(serializers.ModelSerializer):
         model = Manito
         fields = [
             'id',
+            'title',
             'author',
             'type',
             'price',

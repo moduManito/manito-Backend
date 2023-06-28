@@ -1,6 +1,6 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 
 class UserManager(BaseUserManager):
@@ -23,7 +23,7 @@ class UserManager(BaseUserManager):
         user.save()
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         db_table = 'user'
         verbose_name = 'User'
@@ -59,3 +59,6 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return self.is_superuser
+
+    def __str__(self):
+        return self.name

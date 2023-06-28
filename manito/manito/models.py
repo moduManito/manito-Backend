@@ -12,6 +12,11 @@ class Manito(models.Model):
         db_table = 'manito'
         verbose_name = 'Manito'
 
+    title = models.CharField(
+        verbose_name="제목",
+        max_length=255,
+    )
+
     author = models.ForeignKey(
         User,
         verbose_name="마니또 만든 이",
@@ -45,3 +50,6 @@ class Manito(models.Model):
         verbose_name="마감날",
         null=True,
     )
+
+    def __str__(self):
+        return self.title
