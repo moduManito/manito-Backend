@@ -15,16 +15,12 @@ class Partner(models.Model):
         on_delete=models.CASCADE,
     )
 
-    manito_sender = models.ForeignKey(
-        User,
+    manito_sender = models.CharField(
         verbose_name="보내는 사람",
-        on_delete=models.CASCADE,
-        related_name='sender'
+        max_length=255,
     )
 
-    manito_receiver = models.ForeignKey(
-        User,
+    manito_receiver = models.CharField(
         verbose_name="받는 사람",
-        on_delete=models.CASCADE,
-        related_name='receiver',
+        max_length=255,
     )
