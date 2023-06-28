@@ -1,6 +1,11 @@
-from django.urls import path
-from manito.views import ManitoAPI
+from django.urls import path, include
+from manito.views import ManitoCreateAPIView
+from partner.views import PartnerCountView
+
+app_name = "manito"
 
 urlpatterns = [
-    path("", ManitoAPI.as_view())
+    path("", ManitoCreateAPIView.as_view()),
+    path("<int:manito_id>/partner/", include('partner.urls')),
+    path("count/", PartnerCountView.as_view()),
 ]

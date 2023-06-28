@@ -1,5 +1,4 @@
 import random
-import re
 import smtplib
 from email.mime.text import MIMEText
 
@@ -10,10 +9,7 @@ from rest_framework.response import Response
 from manito.models import Manito
 from manito.serializers.manitoSerializers import ManitoSerializer
 from partner.models import Partner
-from user.models import User
 
-
-# Create your views here.
 
 def sendEmail(name_data, mail_data, price):
     s = smtplib.SMTP('smtp.gmail.com', 587)  # 세션 생성
@@ -50,7 +46,7 @@ def sendEmail(name_data, mail_data, price):
     return manito_sender, shuffle_manito, manito_mail
 
 
-class ManitoAPI(CreateAPIView):
+class ManitoCreateAPIView(CreateAPIView):
     queryset = Manito.objects.all()
     serializer_class = ManitoSerializer
 
