@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -19,10 +19,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-52ksq*g-t9=vaabt#ni(45e0*j_uucev*p2l_&-)347wj$hma6'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -37,13 +36,17 @@ DEFAULT_APPS = [
     'django.contrib.staticfiles',
 ]
 
+PACKAGE_APPS = [
+    'rest_framework',
+]
+
 USER_APPS = [
     'user',
     'manito',
     'partner',
 ]
 
-INSTALLED_APPS = DEFAULT_APPS + USER_APPS
+INSTALLED_APPS = DEFAULT_APPS + PACKAGE_APPS + USER_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
