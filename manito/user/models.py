@@ -17,7 +17,3 @@ class User(AbstractBaseUser):
         verbose_name="이름",
         max_length=255,
     )
-
-    is_kakao = models.BooleanField(
-        default=False
-    )
