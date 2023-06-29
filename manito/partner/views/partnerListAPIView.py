@@ -11,6 +11,10 @@ from partner.serializers import PartnerSerializer
 
 # TODO: Permission 적용
 class PartnerListAPIView(ListAPIView):
+    """
+    마니또 제목, 시작 시간, 종료 시간을 보여주고
+    마니또와 마루를 맺은 사람들을 같은 인덱스 번호로 리스트로 보여준다.
+    """
     serializer_class = PartnerSerializer
     permission_classes = [IsManitoOwner]
 
