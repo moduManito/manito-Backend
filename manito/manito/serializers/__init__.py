@@ -1,0 +1,2 @@
+from .manitoSerializers import ManitoSerializer
+from .abstractManitoSerailizers import AbstractManitoSerializer

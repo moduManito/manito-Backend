@@ -63,6 +63,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     ),
+    'DATETIME_FORMAT': "%Y-%m-%d %H:%M:%S",
 }
 
 SIMPLE_JWT = {
