@@ -21,6 +21,8 @@ def sendEmail(name_data, mail_data, price):
     manito_sender = [name.strip() for name in name_data[1:-1].split(',')]
     manito_mail = [email.strip() for email in mail_data[1:-1].split(',')]
     shuffle_manito = [name.strip() for name in name_data[1:-1].split(',')]
+    if len(manito_sender) == 1:
+        return manito_sender, shuffle_manito, manito_mail
 
     # 중복 제거 처리
     while True:
@@ -58,7 +60,8 @@ def sendCheckEmail(mail_data, author):
         # for i in range(len('a')):
         msg = MIMEText(f'안녕하세요! {author}님(개설자)이 마니또 매칭 결과를 확인했습니다!!\n')
         msg['Subject'] = '모두의 마니또'
-        s.sendmail("modumanito@gmail.com", f"{manito_mail[i]}", msg.as_string())
+        s.sendmail("modumanito@gmail.com", f"{manito_mail[i]}",
+                   msg.as_string())
 
     s.quit()  # 세션 종료
 
@@ -80,6 +83,8 @@ class ManitoCreateAPIView(CreateAPIView):
             serializer.validated_data['name_data'],
             serializer.validated_data['mail_data'],
             serializer.validated_data['price'])
+        if len(manito_receiver) == 1:
+            return Response({"error: 두 개 이상의 메일을 적어주세요"}, status=400)
         self.perform_create(serializer)
         manito = serializer.instance
         for i in range(len(manito_receiver)):

@@ -9,6 +9,7 @@ class ManitoSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'title',
+            'content',
             'author',
             'type',
             'price',
