@@ -1,8 +1,8 @@
-from rest_framework.views import APIView
-from user.serializers import UserSerializer
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+from user.serializers import UserSerializer
 
 
 class RegisterAPIView(APIView):
@@ -18,17 +18,14 @@ class RegisterAPIView(APIView):
             res = Response(
                 {
                     "user": serializer.data,
-                    "message": "register successs",
+                    "message": "회원가입 성공",
                     "token": {
                         "access": access_token,
                         "refresh": refresh_token,
                     },
                 },
-                status=status.HTTP_200_OK,
+                status=200,
             )
 
-            # res.set_cookie("access", access_token, httponly=True)
-            # res.set_cookie("refresh", refresh_token, httponly=True)
-
             return res
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=400)

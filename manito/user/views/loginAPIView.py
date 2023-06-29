@@ -8,11 +8,6 @@ from user.serializers import LoginSerializer
 
 
 class LoginAPIView(APIView):
-    """
-    email과 password 를 넣고 post 요청하면 로그인됩니다.
-    DB에 존재하는 유저라면 해당 유저의 JWT 토큰(access 토큰과 refresh 토큰)을 응답합니다.
-    """
-
     def post(self, request):
         user = authenticate(
             email=request.data.get("email"),
@@ -26,7 +21,7 @@ class LoginAPIView(APIView):
             res = Response(
                 {
                     "user": serializer.data,
-                    "message": "login success",
+                    "message": "로그인 성공",
                     "token": {
                         "access": access_token,
                         "refresh": refresh_token,

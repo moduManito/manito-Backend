@@ -18,3 +18,9 @@ class LoginSerializer(serializers.ModelSerializer):
         read_only_fields = [
             'name',
         ]
+
+        extra_kwargs = {
+            'password': {
+                'write_only': True
+            }
+        }
