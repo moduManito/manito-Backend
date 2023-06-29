@@ -21,6 +21,7 @@ class Manito(models.Model):
         User,
         verbose_name="마니또 만든 이",
         on_delete=models.CASCADE,
+        blank=True,
     )
 
     type = models.CharField(
