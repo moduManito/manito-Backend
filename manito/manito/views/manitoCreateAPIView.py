@@ -18,19 +18,20 @@ admin_mail = os.environ.get("ADMIN_EMAIL")
 admin_password = os.environ.get("ADMIN_PASSWORD")
 
 
-def sendEmail(name_data, mail_data, price, title, content):
+def sendEmail(name_data, mail_data, price, title, content, author):
     title = title
     content = content
     price = price
+    author = author
 
     s = smtplib.SMTP('smtp.gmail.com', 587)  # 세션 생성
     s.starttls()  # TLS 보안 시작
     s.login(admin_mail, admin_password)  # 로그인 인증
     # 마니또 받는 사람 
     # 프론트에서 받아야하는 데이터
-    manito_sender = [name.strip() for name in name_data[1:-1].split(',')]
-    manito_mail = [email.strip() for email in mail_data[1:-1].split(',')]
-    shuffle_manito = [name.strip() for name in name_data[1:-1].split(',')]
+    manito_sender = [name.strip() for name in name_data.split(',')]
+    manito_mail = [email.strip() for email in mail_data.split(',')]
+    shuffle_manito = [name.strip() for name in name_data.split(',')]
     if len(manito_sender) <= 1:
         return manito_sender, shuffle_manito, manito_mail
 
@@ -56,7 +57,7 @@ def sendEmail(name_data, mail_data, price, title, content):
 
         msg_html = f'''
         <img style="width: 200px;" src="https://github.com/Rayleigh190/Orange/assets/86937253/168590d0-1429-4088-9926-a931f4382690"/>
-        <h1>🎊 {title} 마니또에 초대 됐습니다! 🎉</h1>
+        <h1>🎊 {title} 마니또에 초대 됐습니다!{author} 🎉</h1>
         <p>안녕하세요👋 {manito_sender[i]}님!!</p>
         <p> 당신의 마니또는 {shuffle_manito[i]}입니다! 💰예산은 {price}원이며 마니또의 🎁선물을 준비해주세요!</p><br/>
         <div style='background-color: #EBEBEB; padding: 8px; width: 450px'>📢 {content}</div>
@@ -121,12 +122,15 @@ class ManitoCreateAPIView(CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        author = request.user.name
         manito_sender, manito_receiver, manito_mail = sendEmail(
             serializer.validated_data['name_data'],
             serializer.validated_data['mail_data'],
             serializer.validated_data['price'],
             serializer.validated_data['title'],
-            serializer.validated_data['content'])
+            serializer.validated_data['content'],
+            author,
+            )
         if len(manito_receiver) <= 1:
             return Response({"error: 두 개 이상의 메일을 적어주세요"}, status=400)
         self.perform_create(serializer)
