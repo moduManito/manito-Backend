@@ -66,6 +66,10 @@ def sendCheckEmail(mail_data, author):
 
 
 class ManitoCreateAPIView(CreateAPIView):
+    """
+    마니또를 저장하고
+    파트너를 생성하여 메일을 전송합니다.
+    """
     queryset = Manito.objects.all()
     serializer_class = ManitoSerializer
 
@@ -88,16 +92,21 @@ class ManitoCreateAPIView(CreateAPIView):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED,
                         headers=headers)
-    
+
 
 class ManitoCheckAPIView(APIView):
+    """
+    마니또 만든 사람이 결과를 보면 참가자들에게 결과 열람 메일을 보냅니다.
+    """
+
     def post(self, *args, **kargs):
         manito_id = self.kwargs['manito_id']
         try:
             manito = Manito.objects.get(id=manito_id)
-            maildata =  manito.mail_data
+            maildata = manito.mail_data
             author = manito.author
             sendCheckEmail(maildata, author)
-            return Response({"message: 마니또 확인 메일 발송 완료"}, status=status.HTTP_200_OK)
+            return Response({"message: 마니또 확인 메일 발송 완료"},
+                            status=status.HTTP_200_OK)
         except:
             return Response({"error: 마니또 확인 메일 발송 실패"}, status=400)
