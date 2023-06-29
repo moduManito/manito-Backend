@@ -1,31 +1,34 @@
+from django.contrib.auth import authenticate
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from user.serializers import UserSerializer
+from user.serializers import LoginSerializer
 
 
-class RegisterAPIView(APIView):
-
+class LoginAPIView(APIView):
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-
+        user = authenticate(
+            email=request.data.get("email"),
+            password=request.data.get("password")
+        )
+        if user is not None:
+            serializer = LoginSerializer(user)
             token = TokenObtainPairSerializer.get_token(user)
             refresh_token = str(token)
             access_token = str(token.access_token)
             res = Response(
                 {
                     "user": serializer.data,
-                    "message": "회원가입 성공",
+                    "message": "로그인 성공",
                     "token": {
                         "access": access_token,
                         "refresh": refresh_token,
                     },
                 },
-                status=200,
+                status=status.HTTP_200_OK,
             )
-
             return res
-        return Response(serializer.errors, status=400)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

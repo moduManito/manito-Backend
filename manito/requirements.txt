@@ -8,6 +8,7 @@ cryptography==41.0.1
 defusedxml==0.7.1
 dj-rest-auth==4.0.1
 Django==4.2.2
+django-allauth==0.54.0
 django-cors-headers==4.1.0
 django-dotenv==1.4.2
 django-jazzmin==2.6.0
