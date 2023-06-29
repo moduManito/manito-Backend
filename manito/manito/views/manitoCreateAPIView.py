@@ -876,7 +876,7 @@ def sendCheckEmail(mail_data, author):
         msgRoot.attach(msg)
 
         msg_html = f'''
-        <img style="width: 200px;" src="https://github.com/Rayleigh190/Orange/assets/86937253/168590d0-1429-4088-9926-a931f4382690"/>
+        <img style="width: 200px;" src="https://github.com/Rayleigh190/Orange/assets/86937253/43b84b90-49e7-489b-81d8-e13f986c7e18"/>
         <h1>📢 마니토 매칭 결과 확인</h1>
         <p>안녕하세요👋 {author}님(개설자)이 마니또 매칭 결과를 🔍확인했습니다!!</p>
         '''
