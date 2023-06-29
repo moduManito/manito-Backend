@@ -11,7 +11,7 @@ class Partner(models.Model):
 
     manito = models.ForeignKey(
         Manito,
-        verbose_name="마니또",
+        verbose_name="마니또 제목",
         on_delete=models.CASCADE,
     )
 
@@ -28,4 +28,3 @@ class Partner(models.Model):
     @property
     def total_count(self):
         return Partner.objects.all().count()
-   
