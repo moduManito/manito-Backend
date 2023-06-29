@@ -21,5 +21,6 @@ class ManitoSerializer(serializers.ModelSerializer):
 
         read_only_fields = [
             'id',
+            'author'
             'created_at',
         ]
