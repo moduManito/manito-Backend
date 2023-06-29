@@ -101,6 +101,9 @@ class ManitoCreateAPIView(CreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED,
                         headers=headers)
 
+    def perform_create(self, serializer):
+        return serializer.save(author=self.request.user)
+
 
 class ManitoCheckAPIView(APIView):
     """
