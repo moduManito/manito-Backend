@@ -53,7 +53,7 @@ def sendEmail(name_data, mail_data, price, title, content):
         msgRoot['Subject'] = '모두의 마니또'
         msg = MIMEMultipart('alternative')
         msgRoot.attach(msg)
-        
+
         msg_html = f'''
         <img style="width: 200px;" src="https://github.com/Rayleigh190/Orange/assets/86937253/168590d0-1429-4088-9926-a931f4382690"/>
         <h1>🎊 {title} 마니또에 초대 됐습니다! 🎉</h1>
@@ -65,7 +65,7 @@ def sendEmail(name_data, mail_data, price, title, content):
         msg_body = MIMEText(msg_html, 'html')
         msg.attach(msg_body)
 
-        try: 
+        try:
             s.sendmail(admin_mail, f"{manito_mail[i]}", msgRoot.as_string())
         except Exception as e:
             print("err: ", str(e))
@@ -87,7 +87,7 @@ def sendCheckEmail(mail_data, author):
         msgRoot['Subject'] = '모두의 마니또'
         msg = MIMEMultipart('alternative')
         msgRoot.attach(msg)
-        
+
         msg_html = f'''
         <img style="width: 200px;" src="https://github.com/Rayleigh190/Orange/assets/86937253/168590d0-1429-4088-9926-a931f4382690"/>
         <h1>📢 마니토 매칭 결과 확인</h1>
@@ -97,7 +97,7 @@ def sendCheckEmail(mail_data, author):
         msg_body = MIMEText(msg_html, 'html')
         msg.attach(msg_body)
 
-        try: 
+        try:
             s.sendmail(admin_mail, f"{manito_mail[i]}", msg.as_string())
         except Exception as e:
             print("err: ", str(e))
@@ -112,6 +112,11 @@ class ManitoCreateAPIView(CreateAPIView):
     """
     queryset = Manito.objects.all()
     serializer_class = ManitoSerializer
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_anonymous:
+            return Response({"error": "로그인이 필요합니다."}, status=401)
+        return super().post(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
