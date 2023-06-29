@@ -295,7 +295,7 @@ def sendEmail(name_data, mail_data, price, title, content, author):
                                       <img
                                         align="center"
                                         border="0"
-                                        src="https://github.com/Rayleigh190/profile_card/assets/86937253/e7984bb8-7e7c-4fa3-9bf3-af9aa6ca31c5"
+                                        src="https://github.com/Rayleigh190/Orange/assets/86937253/2fd084b9-c9ed-4900-9c0f-77797b791d00"
                                         alt="image"
                                         title="image"
                                         style="
@@ -758,7 +758,7 @@ def sendEmail(name_data, mail_data, price, title, content, author):
                               >
                                 <div align="center">
                                   <a
-                                    href="https://api.modumanito.site"
+                                    href="https://modumanito.site/"
                                     target="_blank"
                                     class="v-button"
                                     style="
