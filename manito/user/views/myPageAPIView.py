@@ -12,6 +12,8 @@ class MyPageAPIView(APIView):
         내가 만든 마니또 목록 및 유저 데이터 반환
         """
         user = request.user
+        if user.is_anonymous:
+            return Response({"error": "로그인이 필요합니다."}, status=401)
         manito = Manito.objects.filter(author=user)
         serializer = AbstractManitoSerializer(manito, many=True)
         return Response(serializer.data)
