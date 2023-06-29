@@ -2,6 +2,8 @@ import os
 import random
 import smtplib
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.image import MIMEImage
 
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
@@ -16,7 +18,11 @@ admin_mail = os.environ.get("ADMIN_EMAIL")
 admin_password = os.environ.get("ADMIN_PASSWORD")
 
 
-def sendEmail(name_data, mail_data, price):
+def sendEmail(name_data, mail_data, price, title, content):
+    title = title
+    content = content
+    price = price
+
     s = smtplib.SMTP('smtp.gmail.com', 587)  # 세션 생성
     s.starttls()  # TLS 보안 시작
     s.login(admin_mail, admin_password)  # 로그인 인증
@@ -42,11 +48,27 @@ def sendEmail(name_data, mail_data, price):
             break
 
     for i in range(len(manito_sender)):
-        # for i in range(len('a')):
-        msg = MIMEText(
-            f'안녕하세요! {manito_sender[i]}님!! \n 당신의 마니또는 {shuffle_manito[i]}입니다! 예산은 {price}원이며 마니또의 선물을 준비해주세요!')
-        msg['Subject'] = '모두의 마니또'
-        s.sendmail(admin_mail, f"{manito_mail[i]}", msg.as_string())
+
+        msgRoot = MIMEMultipart('related')
+        msgRoot['Subject'] = '모두의 마니또'
+        msg = MIMEMultipart('alternative')
+        msgRoot.attach(msg)
+        
+        msg_html = f'''
+        <img style="width: 200px;" src="https://github.com/Rayleigh190/Orange/assets/86937253/168590d0-1429-4088-9926-a931f4382690"/>
+        <h1>🎊 {title} 마니또에 초대 됐습니다! 🎉</h1>
+        <p>안녕하세요👋 {manito_sender[i]}님!!</p>
+        <p> 당신의 마니또는 {shuffle_manito[i]}입니다! 💰예산은 {price}원이며 마니또의 🎁선물을 준비해주세요!</p><br/>
+        <div style='background-color: #EBEBEB; padding: 8px; width: 450px'>📢 {content}</div>
+        '''
+
+        msg_body = MIMEText(msg_html, 'html')
+        msg.attach(msg_body)
+
+        try: 
+            s.sendmail(admin_mail, f"{manito_mail[i]}", msgRoot.as_string())
+        except Exception as e:
+            print("err: ", str(e))
 
     s.quit()  # 세션 종료
 
@@ -61,14 +83,26 @@ def sendCheckEmail(mail_data, author):
     manito_mail = [email.strip() for email in mail_data[1:-1].split(',')]
 
     for i in range(len(manito_mail)):
-        msg = MIMEText(f'안녕하세요! {author}님(개설자)이 마니또 매칭 결과를 확인했습니다!!\n')
-        msg['Subject'] = '모두의 마니또'
-        s.sendmail(admin_mail, f"{manito_mail[i]}",
-                   msg.as_string())
+        msgRoot = MIMEMultipart('related')
+        msgRoot['Subject'] = '모두의 마니또'
+        msg = MIMEMultipart('alternative')
+        msgRoot.attach(msg)
+        
+        msg_html = f'''
+        <img style="width: 200px;" src="https://github.com/Rayleigh190/Orange/assets/86937253/168590d0-1429-4088-9926-a931f4382690"/>
+        <h1>📢 마니토 매칭 결과 확인</h1>
+        <p>안녕하세요👋 {author}님(개설자)이 마니또 매칭 결과를 🔍확인했습니다!!</p>
+        '''
+
+        msg_body = MIMEText(msg_html, 'html')
+        msg.attach(msg_body)
+
+        try: 
+            s.sendmail(admin_mail, f"{manito_mail[i]}", msg.as_string())
+        except Exception as e:
+            print("err: ", str(e))
 
     s.quit()  # 세션 종료
-
-    # return manito_sender, shuffle_manito, manito_mail
 
 
 class ManitoCreateAPIView(CreateAPIView):
@@ -85,7 +119,9 @@ class ManitoCreateAPIView(CreateAPIView):
         manito_sender, manito_receiver, manito_mail = sendEmail(
             serializer.validated_data['name_data'],
             serializer.validated_data['mail_data'],
-            serializer.validated_data['price'])
+            serializer.validated_data['price'],
+            serializer.validated_data['title'],
+            serializer.validated_data['content'])
         if len(manito_receiver) <= 1:
             return Response({"error: 두 개 이상의 메일을 적어주세요"}, status=400)
         self.perform_create(serializer)
