@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -10,9 +11,10 @@ class LogoutAPIView(APIView):
         if refresh_token:
             try:
                 token = RefreshToken(refresh_token)
+                token.blacklist()
                 return Response({"message": "로그아웃 성공"},
                                 status=200)
-            except Exception:
+            except TokenError:
                 return Response({"message": "유효하지 않은 토큰입니다."},
                                 status=400)
         else:

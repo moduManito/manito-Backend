@@ -29,6 +29,10 @@ class Manito(models.Model):
         max_length=255,
     )
 
+    content = models.TextField(
+        verbose_name="메일에 넣을 내용",
+    )
+
     price = models.PositiveIntegerField(
         verbose_name="선물 금액",
     )

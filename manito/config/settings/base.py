@@ -69,6 +69,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=31),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
+    'TOKEN_USER_CLASS': 'user.User',
 }
 
 MIDDLEWARE = [
