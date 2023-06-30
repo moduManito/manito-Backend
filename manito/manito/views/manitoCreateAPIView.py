@@ -758,7 +758,7 @@ def sendEmail(name_data, mail_data, price, title, content, author):
                               >
                                 <div align="center">
                                   <a
-                                    href="https://modumanito.site/"
+                                    href="https://manittomoma.netlify.app/create"
                                     target="_blank"
                                     class="v-button"
                                     style="
@@ -916,7 +916,7 @@ class ManitoCreateAPIView(CreateAPIView):
             serializer.validated_data['title'],
             serializer.validated_data['content'],
             author,
-            )
+        )
         if len(manito_receiver) <= 1:
             return Response({"error: 두 개 이상의 메일을 적어주세요"}, status=400)
         self.perform_create(serializer)

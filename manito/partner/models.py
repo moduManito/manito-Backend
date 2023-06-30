@@ -24,7 +24,3 @@ class Partner(models.Model):
         verbose_name="받는 사람",
         max_length=255,
     )
-
-    @property
-    def total_count(self):
-        return Partner.objects.all().count()
