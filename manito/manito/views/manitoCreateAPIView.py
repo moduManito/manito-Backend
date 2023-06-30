@@ -436,7 +436,7 @@ def sendEmail(name_data, mail_data, price, title, content, author):
                                     ></span
                                     >{author}님이 당신을 초대했습니다!<br />
                                     안녕하세요 {manito_sender[i]}님~<br />저희는
-                                    TEAM 모마 입니다👋<br />저희는 여러분의
+                                    TEAM 모마 입니다👋<br />여러분의
                                     마니또 매칭을 도와드립니다 🎉
                                   </p>
                                 </div>
@@ -793,6 +793,9 @@ def sendEmail(name_data, mail_data, price, title, content, author):
                                       ></span
                                     >
                                   </a>
+                                </div>
+                                <div style="text-align: center">
+                                  <a href="https://www.instagram.com/together_moma/">모마 인스타그램</a>
                                 </div>
                               </td>
                             </tr>
